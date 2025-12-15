@@ -1,0 +1,28 @@
+directories:
+  output: dist
+  buildResources: build
+appId: com.en16931.converter
+productName: Invoice Converter
+files:
+  - filter:
+      - main.js
+      - preload.js
+      - renderer/**/*
+      - lib/**/*
+      - assets/**/*
+win:
+  target: nsis
+  signAndEditExecutable: false
+  icon: assets/icon.png
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Invoice Converter
+  license: LICENSE.txt
+  perMachine: false
+  allowElevation: true
+  runAfterFinish: true
+  deleteAppDataOnUninstall: true
+electronVersion: 28.3.3
