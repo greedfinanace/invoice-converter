@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading AI Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #1a1a2e; color: #eee; min-height: 100vh; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; margin-bottom: 30px; color: #00d4ff; }
+        .controls { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+        input, select, button { padding: 12px 20px; border: none; border-radius: 8px; font-size: 16px; }
+        input, select { background: #16213e; color: #eee; }
+        button { background: #00d4ff; color: #1a1a2e; cursor: pointer; font-weight: bold; }
+        button:hover { background: #00a8cc; }
+        button:disabled { background: #555; cursor: not-allowed; }
+        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .card { background: #16213e; padding: 20px; border-radius: 12px; text-align: center; }
+        .card h3 { color: #888; font-size: 14px; margin-bottom: 8px; }
+        .card p { font-size: 28px; font-weight: bold; }
+        .signal-BUY { color: #00ff88; }
+        .signal-SELL { color: #ff4757; }
+        .signal-HOLD { color: #ffa502; }
+        #chart { background: #16213e; border-radius: 12px; padding: 10px; }
+        .loading { text-align: center; padding: 50px; color: #888; }
+        .error { background: #ff4757; color: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 Trading AI Dashboard</h1>
+        
+        <div class="controls">
+            <input type="text" id="symbol" placeholder="Symbol (e.g., AAPL)" value="AAPL">
+            <select id="assetType">
+                <option value="stock">Stock</option>
+                <option value="crypto">Crypto</option>
+                <option value="forex">Forex</option>
+                <option value="commodity">Commodity (Gold/Silver)</option>
+            </select>
+            <select id="modelType">
+                <option value="xgboost">XGBoost</option>
+                <option value="rf">Random Forest</option>
+            </select>
+            <button id="analyzeBtn" onclick="analyze()">Analyze</button>
+        </div>
+        
+        <div id="error" class="error" style="display:none;"></div>
+        
+        <div class="cards">
+            <div class="card"><h3>CURRENT PRICE</h3><p id="price">-</p></div>
+            <div class="card"><h3>AI SIGNAL</h3><p id="signal">-</p></div>
+            <div class="card"><h3>MODEL ACCURACY</h3><p id="accuracy">-</p></div>
+            <div class="card"><h3>BACKTEST RETURN</h3><p id="returns">-</p></div>
+            <div class="card"><h3>TOTAL TRADES</h3><p id="trades">-</p></div>
+        </div>
+        
+        <div id="chart"><div class="loading">Enter a symbol and click Analyze</div></div>
+    </div>
+
+    <script>
+        async function analyze() {
+            const btn = document.getElementById('analyzeBtn');
+            const symbol = document.getElementById('symbol').value.toUpperCase();
+            const assetType = document.getElementById('assetType').value;
+            
+            btn.disabled = true;
+            btn.textContent = 'Analyzing...';
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('chart').innerHTML = '<div class="loading">Loading data and training model...</div>';
+            
+            try {
+                const res = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ symbol, asset_type: assetType, model_type: document.getElementById('modelType').value })
+                });
+                const data = await res.json();
+                
+                if (!data.success) throw new Error(data.error);
+                
+                document.getElementById('price').textContent = '$' + data.latest_price;
+                document.getElementById('signal').textContent = data.signal;
+                document.getElementById('signal').className = 'signal-' + data.signal;
+                document.getElementById('accuracy').textContent = (data.metrics.test_accuracy * 100).toFixed(1) + '%';
+                document.getElementById('returns').textContent = data.backtest.return_pct + '%';
+                document.getElementById('trades').textContent = data.backtest.total_trades;
+                
+                Plotly.newPlot('chart', data.chart.data, data.chart.layout);
+            } catch (err) {
+                document.getElementById('error').textContent = 'Error: ' + err.message;
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('chart').innerHTML = '<div class="loading">Failed to load</div>';
+            }
+            
+            btn.disabled = false;
+            btn.textContent = 'Analyze';
+        }
+    </script>
+</body>
+</html>
