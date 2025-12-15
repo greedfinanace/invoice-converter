@@ -1,0 +1,56 @@
+{
+  "name": "invoice-converter",
+  "version": "1.0.0",
+  "description": "Invoice Converter - Desktop Application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "build": {
+    "appId": "com.en16931.converter",
+    "productName": "Invoice Converter",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "lib/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "signAndEditExecutable": false,
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Invoice Converter",
+      "license": "LICENSE.txt",
+      "perMachine": false,
+      "allowElevation": true,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": true
+    }
+  },
+  "author": "EN16931 Converter",
+  "license": "MIT",
+  "dependencies": {
+    "xml2js": "^0.6.2",
+    "xmlbuilder2": "^3.1.1",
+    "papaparse": "^5.4.1",
+    "decimal.js": "^10.4.3"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  }
+}
