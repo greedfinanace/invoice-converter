@@ -1,4 +1,4 @@
-# Invoice Converter
+# Invoice Converter for macOS
 
 A professional desktop application for converting invoices between EN16931 compliant formats.
 
@@ -12,66 +12,40 @@ Invoice Converter is a lightweight, user-friendly tool designed to transform inv
 
 ## Features
 
-- Clean, modern dark-themed interface
+- Native macOS experience with dark mode support
 - Drag and drop file support
 - Real-time EN16931 business rule validation
 - Multiple input and output format support
 - Country-specific CIUS (Core Invoice Usage Specification) compliance
 - Automatic output file naming and placement
 - No internet connection required
+- Universal binary (Apple Silicon & Intel)
 
 ---
 
 ## Installation
 
-### Standard Installation
+### DMG Installation
 
-Run `Invoice Converter Setup.exe` to launch the installation wizard:
+1. Download `Invoice Converter.dmg`
+2. Open the DMG file
+3. Drag Invoice Converter to your Applications folder
+4. Launch from Applications or Spotlight
 
-1. Accept the license agreement
-2. Choose your installation directory (default: Program Files)
-3. Complete the installation
+### First Launch
 
-The installer will create:
-- Desktop shortcut
-- Start Menu entry
-- Uninstaller (accessible via Add/Remove Programs)
-
-### Portable Version (Windows)
-
-Alternatively, use `Invoice Converter.exe` directly without installation.
-
-### macOS Installation
-
-1. Download the `.dmg` file from the [Releases](https://github.com/greedfinanace/invoice-converter/releases) page.
-2. Double-click the `.dmg` file to mount it.
-3. Drag the **Invoice Converter** app into your **Applications** folder.
-
-**Note for macOS Users:**
-If you see a warning saying *"App cannot be opened because the developer cannot be verified"*:
-1. Go to **System Settings** > **Privacy & Security**.
-2. Scroll down to the security section.
-3. Click **Open Anyway** next to the notification about Invoice Converter.
-4. Click **Open** in the confirmation dialog.
-
-### Linux Installation
-
-**Debian/Ubuntu (DEB):**
-1. Download the `.deb` file.
-2. Install via terminal: `sudo dpkg -i invoice-converter_1.0.0_amd64.deb` or double-click to open in Software Center.
-
-**AppImage:**
-1. Download the `.AppImage` file.
-2. Make it executable: `chmod +x Invoice-Converter-1.0.0.AppImage`
-3. Run it: `./Invoice-Converter-1.0.0.AppImage`
+On first launch, macOS may show a security warning. To open:
+1. Right-click (or Control-click) the app
+2. Select "Open" from the context menu
+3. Click "Open" in the dialog
 
 ---
-
 
 ## Usage
 
 1. Launch Invoice Converter
 2. Drag and drop your invoice file onto the application window
+   - Or use File > Open Invoice... (⌘O)
 3. Select the desired output format
 4. Choose the appropriate country for CIUS rules
 5. Click "Convert"
@@ -120,6 +94,14 @@ The application supports country-specific CIUS implementations:
 
 ---
 
+## System Requirements
+
+- macOS 10.13 (High Sierra) or later
+- Apple Silicon (M1/M2/M3) or Intel processor
+- 100 MB disk space
+
+---
+
 ## License
 
 This software is provided under a custom license with the following terms:
@@ -147,7 +129,7 @@ For licensing inquiries, enterprise permissions, or support:
 
 ## Technical Information
 
-- Platform: Windows (64-bit), macOS (Universal)
+- Platform: macOS (Universal Binary)
 - Framework: Electron
 - Standards: EN16931, UBL 2.1, UN/CEFACT CII
 

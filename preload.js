@@ -11,4 +11,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   validateFile: (options) => ipcRenderer.invoke('validate-file', options),
   openFolder: (path) => ipcRenderer.invoke('open-folder', path),
   selectFolder: () => ipcRenderer.invoke('select-folder'),
+  
+  // macOS specific - listen for file opened from menu
+  onFileOpened: (callback) => ipcRenderer.on('file-opened', (event, filePath) => callback(filePath)),
 });

@@ -1,17 +1,18 @@
 {
-  "name": "invoice-converter",
+  "name": "invoice-converter-mac",
   "version": "1.0.0",
-  "description": "Invoice Converter - Desktop Application",
+  "description": "Invoice Converter - Desktop Application for macOS",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "build:win": "electron-builder --win",
     "build:mac": "electron-builder --mac",
-    "build:linux": "electron-builder --linux"
+    "build:mac-arm": "electron-builder --mac --arm64",
+    "build:mac-x64": "electron-builder --mac --x64",
+    "build:mac-universal": "electron-builder --mac --universal"
   },
   "build": {
-    "appId": "com.en16931.converter",
+    "appId": "com.en16931.converter.mac",
     "productName": "Invoice Converter",
     "directories": {
       "output": "dist"
@@ -23,30 +24,45 @@
       "lib/**/*",
       "assets/**/*"
     ],
-    "win": {
-      "target": "nsis",
-      "signAndEditExecutable": false,
-      "icon": "assets/icon.png"
-    },
-    "linux": {
+    "mac": {
       "target": [
-        "AppImage",
-        "deb"
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
       ],
-      "icon": "assets/icon.png",
-      "category": "Office"
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.business",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist",
+      "darkModeSupport": true
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Invoice Converter",
-      "license": "LICENSE.txt",
-      "perMachine": false,
-      "allowElevation": true,
-      "runAfterFinish": true,
-      "deleteAppDataOnUninstall": true
+    "dmg": {
+      "background": "assets/dmg-background.png",
+      "icon": "assets/icon.icns",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 540,
+        "height": 380
+      }
     }
   },
   "author": "EN16931 Converter",
