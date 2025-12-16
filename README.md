@@ -54,7 +54,19 @@ If you see a warning saying *"App cannot be opened because the developer cannot 
 3. Click **Open Anyway** next to the notification about Invoice Converter.
 4. Click **Open** in the confirmation dialog.
 
+### Linux Installation
+
+**Debian/Ubuntu (DEB):**
+1. Download the `.deb` file.
+2. Install via terminal: `sudo dpkg -i invoice-converter_1.0.0_amd64.deb` or double-click to open in Software Center.
+
+**AppImage:**
+1. Download the `.AppImage` file.
+2. Make it executable: `chmod +x Invoice-Converter-1.0.0.AppImage`
+3. Run it: `./Invoice-Converter-1.0.0.AppImage`
+
 ---
+
 
 ## Usage
 

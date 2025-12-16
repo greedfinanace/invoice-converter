@@ -28,6 +28,14 @@
       "signAndEditExecutable": false,
       "icon": "assets/icon.png"
     },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/icon.png",
+      "category": "Office"
+    },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
