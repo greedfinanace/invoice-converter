@@ -20,12 +20,20 @@ const outputPath = document.getElementById('output-path');
 const errorList = document.getElementById('error-list');
 const warningList = document.getElementById('warning-list');
 const openFolderBtn = document.getElementById('open-folder-btn');
+const historyList = document.getElementById('history-list');
+const clearHistoryBtn = document.getElementById('clear-history-btn');
+
+// Window controls
+document.getElementById('minimize-btn').addEventListener('click', () => window.electronAPI.minimize());
+document.getElementById('maximize-btn').addEventListener('click', () => window.electronAPI.maximize());
+document.getElementById('close-btn').addEventListener('click', () => window.electronAPI.close());
 
 // State
 let currentFile = null;
 let currentFilePath = null;
 let outputFormat = 'ubl';
 let lastOutputPath = null;
+let conversionHistory = [];
 
 // Detect input format from file extension
 function detectInputFormat(filename) {
@@ -50,50 +58,28 @@ function showState(state) {
   successState.classList.add('hidden');
   errorState.classList.add('hidden');
   warningsArea.classList.add('hidden');
-  
+
   if (state === 'empty') emptyState.classList.remove('hidden');
   if (state === 'loading') loadingState.classList.remove('hidden');
   if (state === 'success') successState.classList.remove('hidden');
   if (state === 'error') errorState.classList.remove('hidden');
 }
 
-
 // Handle file selection
 function handleFile(file, filePath) {
   currentFile = file;
   currentFilePath = filePath;
-  
+
   // Update UI
   dropZone.classList.add('hidden');
   fileInfo.classList.remove('hidden');
   fileName.textContent = file.name;
   fileSize.textContent = formatFileSize(file.size);
-  
-  // Enable buttons
-  convertBtn.disabled = false;
-  validateBtn.disabled = false;
-  
-  showState('empty');
-}
 
-// Handle file from path (for macOS menu File > Open)
-function handleFilePath(filePath) {
-  const pathParts = filePath.split('/');
-  const name = pathParts[pathParts.length - 1];
-  
-  currentFilePath = filePath;
-  currentFile = { name, size: 0 }; // Size unknown from menu open
-  
-  // Update UI
-  dropZone.classList.add('hidden');
-  fileInfo.classList.remove('hidden');
-  fileName.textContent = name;
-  fileSize.textContent = 'Opened from menu';
-  
   // Enable buttons
   convertBtn.disabled = false;
   validateBtn.disabled = false;
-  
+
   showState('empty');
 }
 
@@ -101,13 +87,13 @@ function handleFilePath(filePath) {
 function clearFile() {
   currentFile = null;
   currentFilePath = null;
-  
+
   dropZone.classList.remove('hidden');
   fileInfo.classList.add('hidden');
-  
+
   convertBtn.disabled = true;
   validateBtn.disabled = true;
-  
+
   showState('empty');
 }
 
@@ -126,7 +112,7 @@ dropZone.addEventListener('dragleave', () => {
 dropZone.addEventListener('drop', (e) => {
   e.preventDefault();
   dropZone.classList.remove('drag-over');
-  
+
   const file = e.dataTransfer.files[0];
   if (file) {
     // Get the file path from the dropped file
@@ -180,12 +166,12 @@ function showWarnings(warnings) {
 // Convert button
 convertBtn.addEventListener('click', async () => {
   if (!currentFilePath) return;
-  
+
   showState('loading');
-  
+
   const inputFormat = detectInputFormat(currentFile.name);
   const ciusCountry = countrySelect.value;
-  
+
   try {
     const result = await window.electronAPI.convertFile({
       filePath: currentFilePath,
@@ -193,12 +179,13 @@ convertBtn.addEventListener('click', async () => {
       outputFormat,
       ciusCountry
     });
-    
+
     if (result.success) {
       lastOutputPath = result.outputPath;
       outputPath.textContent = result.outputFileName;
       showState('success');
       showWarnings(result.warnings);
+      addToHistory(currentFile.name, result.outputFileName, outputFormat, ciusCountry);
     } else {
       showErrors(result.errors);
       showWarnings(result.warnings);
@@ -211,17 +198,17 @@ convertBtn.addEventListener('click', async () => {
 // Validate button
 validateBtn.addEventListener('click', async () => {
   if (!currentFilePath) return;
-  
+
   showState('loading');
-  
+
   const inputFormat = detectInputFormat(currentFile.name);
-  
+
   try {
     const result = await window.electronAPI.validateFile({
       filePath: currentFilePath,
       inputFormat
     });
-    
+
     if (result.isValid) {
       outputPath.textContent = 'Invoice is valid! ✓';
       showState('success');
@@ -235,7 +222,7 @@ validateBtn.addEventListener('click', async () => {
   }
 });
 
-// Open folder button (Show in Finder on macOS)
+// Open folder button
 openFolderBtn.addEventListener('click', () => {
   if (lastOutputPath) {
     window.electronAPI.openFolder(lastOutputPath);
@@ -249,9 +236,76 @@ successState.addEventListener('transitionend', () => {
   }
 });
 
-// macOS specific - handle file opened from menu
-if (window.electronAPI.onFileOpened) {
-  window.electronAPI.onFileOpened((filePath) => {
-    handleFilePath(filePath);
+// History Management
+function loadHistory() {
+  const saved = localStorage.getItem('conversionHistory');
+  if (saved) {
+    try {
+      conversionHistory = JSON.parse(saved);
+      renderHistory();
+    } catch (e) {
+      console.error('Failed to load history', e);
+    }
+  }
+}
+
+function saveHistory() {
+  localStorage.setItem('conversionHistory', JSON.stringify(conversionHistory));
+  renderHistory();
+}
+
+function addToHistory(fileName, outputName, format, country) {
+  const item = {
+    id: Date.now(),
+    fileName,
+    outputName,
+    format,
+    country,
+    timestamp: new Date().toISOString()
+  };
+
+  conversionHistory.unshift(item);
+  // Keep last 50 items
+  if (conversionHistory.length > 50) {
+    conversionHistory = conversionHistory.slice(0, 50);
+  }
+
+  saveHistory();
+}
+
+function formatTime(isoString) {
+  const date = new Date(isoString);
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function renderHistory() {
+  if (conversionHistory.length === 0) {
+    historyList.innerHTML = '<div class="history-empty">No conversion history</div>';
+    return;
+  }
+
+  historyList.innerHTML = conversionHistory.map(item => `
+    <div class="history-item">
+      <div class="history-item-header">
+        <span class="history-filename" title="${item.fileName}">${item.fileName}</span>
+        <span class="history-time">${formatTime(item.timestamp)}</span>
+      </div>
+      <div class="history-meta">
+        <span class="history-tag">${item.format.toUpperCase()}</span>
+        <span class="history-tag">${item.country}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+if (clearHistoryBtn) {
+  clearHistoryBtn.addEventListener('click', () => {
+    if (confirm('Clear all history?')) {
+      conversionHistory = [];
+      saveHistory();
+    }
   });
 }
+
+// Initialize
+loadHistory();

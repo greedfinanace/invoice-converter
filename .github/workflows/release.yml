@@ -27,7 +27,14 @@ jobs:
           node-version: 18
 
       - name: Install Dependencies
+        if: matrix.os != 'macos-latest'
         run: npm install
+
+      - name: Install Dependencies (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          cd converter-mac
+          npm install
 
       - name: Build for Windows
         if: matrix.os == 'windows-latest'
@@ -35,7 +42,9 @@ jobs:
 
       - name: Build for macOS
         if: matrix.os == 'macos-latest'
-        run: npm run build:mac
+        run: |
+          cd converter-mac
+          npm run build:mac
 
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
@@ -54,8 +63,8 @@ jobs:
         with:
           name: macos-release
           path: |
-            dist/*.dmg
-            dist/*.zip
+            converter-mac/dist/*.dmg
+            converter-mac/dist/*.zip
 
       - name: Upload Artifacts (Linux)
         if: matrix.os == 'ubuntu-latest'
