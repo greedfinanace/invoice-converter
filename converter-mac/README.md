@@ -1,138 +1,176 @@
 # Invoice Converter for macOS
 
-A professional desktop application for converting invoices between EN16931 compliant formats.
+<p align="center">
+  <img src="assets/icon.png" alt="Invoice Converter" width="128" height="128">
+</p>
+
+<p align="center">
+  <strong>Professional EN16931 Invoice Format Conversion</strong><br>
+  Built natively for Mac • Apple Silicon & Intel supported
+</p>
 
 ---
 
-## Overview
+## What is this?
 
-Invoice Converter is a lightweight, user-friendly tool designed to transform invoice files between industry-standard formats. Built for compliance with the European EN16931 e-invoicing standard, it supports seamless conversion between UBL 2.1, UN/CEFACT CII, PDF, and JSON formats.
+Invoice Converter transforms your invoice files between industry-standard e-invoicing formats. Whether you're dealing with UBL, CII, JSON, or need a printable PDF — this app handles it all while staying compliant with the European EN16931 standard.
 
 ---
 
 ## Features
 
-- Native macOS experience with dark mode support
-- Drag and drop file support
-- Real-time EN16931 business rule validation
-- Multiple input and output format support
-- Country-specific CIUS (Core Invoice Usage Specification) compliance
-- Automatic output file naming and placement
-- No internet connection required
-- Universal binary (Apple Silicon & Intel)
+- 🍎 **Native macOS Experience** — Feels right at home on your Mac
+- 🌙 **Dark Mode** — Easy on the eyes, day or night
+- 📁 **Drag & Drop** — Just drop your file and go
+- ✅ **Real-time Validation** — Catch errors before they become problems
+- 🌍 **Country-specific Rules** — XRechnung, Factur-X, FatturaPA support
+- 🔒 **Offline** — Your data never leaves your Mac
+- ⚡ **Universal Binary** — Runs natively on M1/M2/M3 and Intel Macs
 
 ---
 
 ## Installation
 
-### DMG Installation
+### Option 1: DMG Installer (Recommended)
 
 1. Download `Invoice Converter.dmg`
-2. Open the DMG file
-3. Drag Invoice Converter to your Applications folder
-4. Launch from Applications or Spotlight
+2. Double-click to open
+3. Drag **Invoice Converter** to your **Applications** folder
+4. Launch from Applications or Spotlight (⌘ + Space)
 
-### First Launch
+### Option 2: ZIP Archive
 
-On first launch, macOS may show a security warning. To open:
-1. Right-click (or Control-click) the app
-2. Select "Open" from the context menu
-3. Click "Open" in the dialog
+1. Download `Invoice Converter-mac.zip`
+2. Extract the archive
+3. Move `Invoice Converter.app` to Applications
+4. Launch and enjoy
+
+### First Launch Security
+
+macOS may show a security prompt on first launch:
+
+1. **Right-click** (or Control-click) the app
+2. Select **"Open"** from the menu
+3. Click **"Open"** in the dialog
+
+This is only needed once.
 
 ---
 
-## Usage
+## How to Use
 
-1. Launch Invoice Converter
-2. Drag and drop your invoice file onto the application window
-   - Or use File > Open Invoice... (⌘O)
-3. Select the desired output format
-4. Choose the appropriate country for CIUS rules
-5. Click "Convert"
+| Step | Action |
+|------|--------|
+| 1 | Launch Invoice Converter |
+| 2 | Drag your invoice file onto the window (or use ⌘O) |
+| 3 | Pick your output format |
+| 4 | Select your country for CIUS rules |
+| 5 | Click **Convert** |
 
-The converted file will be saved in the same directory as the source file with the naming convention:
-
-    [original_filename]_converted_[FORMAT].[extension]
+Your converted file appears in the same folder as the original:
+```
+MyInvoice.json → MyInvoice_converted_UBL.xml
+```
 
 ---
 
 ## Supported Formats
 
-### Input Formats
+### Input
+| Format | Description |
+|--------|-------------|
+| **JSON** | EN16931 structured data |
+| **XML** | UBL 2.1 or CII (auto-detected) |
+| **CSV** | Spreadsheet with metadata header |
 
-| Format | Description                              |
-|--------|------------------------------------------|
-| JSON   | EN16931 structured invoice data          |
-| XML    | UBL 2.1 or CII (automatically detected)  |
-| CSV    | Spreadsheet format with metadata header  |
-
-### Output Formats
-
-| Format  | Description                                    |
-|---------|------------------------------------------------|
-| UBL 2.1 | OASIS Universal Business Language XML          |
-| CII     | UN/CEFACT Cross-Industry Invoice XML           |
-| PDF     | Human-readable document (HTML-based)           |
-| JSON    | Structured data format                         |
+### Output
+| Format | Description |
+|--------|-------------|
+| **UBL 2.1** | OASIS Universal Business Language |
+| **CII** | UN/CEFACT Cross-Industry Invoice |
+| **PDF** | Human-readable HTML document |
+| **JSON** | Structured data format |
 
 ---
 
 ## Country Support
 
-The application supports country-specific CIUS implementations:
+| Country | Standard | Status |
+|---------|----------|--------|
+| 🇩🇪 Germany | XRechnung | ✅ Full |
+| 🇫🇷 France | Factur-X | ✅ Full |
+| 🇮🇹 Italy | FatturaPA | ✅ Full |
+| 🇪🇸 Spain | — | ✅ Supported |
+| 🇬🇧 United Kingdom | — | ✅ Supported |
+| 🇦🇹 Austria | — | ✅ Supported |
+| 🇳🇱 Netherlands | — | ✅ Supported |
+| 🇧🇪 Belgium | — | ✅ Supported |
 
-| Country        | Standard      |
-|----------------|---------------|
-| Germany        | XRechnung     |
-| France         | Factur-X      |
-| Italy          | FatturaPA     |
-| Spain          | -             |
-| United Kingdom | -             |
-| Austria        | -             |
-| Netherlands    | -             |
-| Belgium        | -             |
+---
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| ⌘ O | Open invoice file |
+| ⌘ W | Close window |
+| ⌘ Q | Quit app |
+| ⌘ , | Preferences |
+| ⌘ + | Zoom in |
+| ⌘ - | Zoom out |
 
 ---
 
 ## System Requirements
 
-- macOS 10.13 (High Sierra) or later
-- Apple Silicon (M1/M2/M3) or Intel processor
-- 100 MB disk space
+- **macOS** 10.13 High Sierra or later
+- **Processor** Apple Silicon (M1/M2/M3) or Intel
+- **Disk Space** ~150 MB
+
+---
+
+## Building from Source
+
+```bash
+# Clone or download the source
+cd converter-mac
+
+# Install dependencies
+npm install
+
+# Run in development
+npm start
+
+# Build for distribution
+npm run build:mac
+```
+
+Build outputs appear in the `dist/` folder.
 
 ---
 
 ## License
 
-This software is provided under a custom license with the following terms:
+**Free for:**
+- Personal use
+- Businesses with capital under $15 million USD
 
-**Permitted Use:**
-- Personal, non-commercial use
-- Business use by organizations with capital under $15 million USD
+**Requires permission:**
+- Organizations with capital over $15 million USD
+- Redistribution or modification
 
-**Restricted Use:**
-- Organizations with capital exceeding $15 million USD require written permission
-- Modification of the software is prohibited
-- Redistribution without permission is prohibited
-
-See `LICENSE.txt` for complete terms and conditions.
+See [LICENSE.txt](LICENSE.txt) for full terms.
 
 ---
 
-## Contact
+## Support & Contact
 
-For licensing inquiries, enterprise permissions, or support:
+📧 **Email:** greedthefirst@gmail.com
 
-**Email:** greedthefirst@gmail.com
-
----
-
-## Technical Information
-
-- Platform: macOS (Universal Binary)
-- Framework: Electron
-- Standards: EN16931, UBL 2.1, UN/CEFACT CII
+For licensing inquiries, enterprise permissions, or support questions.
 
 ---
 
-Invoice Converter - Professional EN16931 Format Conversion
+<p align="center">
+  <sub>Invoice Converter • EN16931 Compliant • Made for Mac</sub>
+</p>
