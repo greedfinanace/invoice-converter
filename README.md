@@ -19,133 +19,214 @@ Invoice Converter transforms your invoice files between industry-standard e-invo
 
 ## Features
 
-- 🍎 **Native macOS Experience** — Feels right at home on your Mac
-- 🌙 **Dark Mode** — Easy on the eyes, day or night
-- 📁 **Drag & Drop** — Just drop your file and go
-- ✅ **Real-time Validation** — Catch errors before they become problems
-- 🌍 **Country-specific Rules** — XRechnung, Factur-X, FatturaPA support
-- 🔒 **Offline** — Your data never leaves your Mac
-- ⚡ **Universal Binary** — Runs natively on M1/M2/M3 and Intel Macs
+- Native macOS experience — feels right at home on your Mac
+- Dark mode support — easy on the eyes, day or night
+- Drag and drop — just drop your file and go
+- Real-time validation — catch errors before they become problems
+- Country-specific rules — XRechnung, Factur-X, FatturaPA support
+- Fully offline — your data never leaves your Mac
+- Universal binary — runs natively on M1/M2/M3 and Intel Macs
 
 ---
 
-## Installation
+## Getting Started (Complete Beginner Guide)
 
-### Option 1: DMG Installer (Recommended)
+### Step 1: Install Node.js (if you don't have it)
 
-1. Download `Invoice Converter.dmg`
-2. Double-click to open
-3. Drag **Invoice Converter** to your **Applications** folder
-4. Launch from Applications or Spotlight (⌘ + Space)
+Node.js is required to build the app. Here's how to get it:
 
-### Option 2: ZIP Archive
+1. Go to **nodejs.org**
+2. Click the big green **"LTS"** button (recommended version)
+3. Open the downloaded `.pkg` file
+4. Follow the installer — just keep clicking **Continue** and **Install**
+5. Done! Node.js is now installed
 
-1. Download `Invoice Converter-mac.zip`
-2. Extract the archive
-3. Move `Invoice Converter.app` to Applications
-4. Launch and enjoy
-
-### First Launch Security
-
-macOS may show a security prompt on first launch:
-
-1. **Right-click** (or Control-click) the app
-2. Select **"Open"** from the menu
-3. Click **"Open"** in the dialog
-
-This is only needed once.
+**To verify it worked:**
+1. Open **Terminal** (press Cmd + Space, type "Terminal", hit Enter)
+2. Type `node --version` and press Enter
+3. You should see something like `v20.10.0` — that means it's working!
 
 ---
 
-## How to Use
+### Step 2: Open Terminal in this folder
 
-| Step | Action |
-|------|--------|
-| 1 | Launch Invoice Converter |
-| 2 | Drag your invoice file onto the window (or use ⌘O) |
-| 3 | Pick your output format |
-| 4 | Select your country for CIUS rules |
-| 5 | Click **Convert** |
+1. Open **Finder**
+2. Navigate to the `converter-mac` folder
+3. **Right-click** on the folder
+4. Select **"New Terminal at Folder"**
 
-Your converted file appears in the same folder as the original:
+**Don't see that option?** Do this instead:
+1. Open **Terminal** (press Cmd + Space, type "Terminal", hit Enter)
+2. Type `cd ` (with a space after it)
+3. Drag the `converter-mac` folder into Terminal
+4. Press **Enter**
+
+---
+
+### Step 3: Install the app's dependencies
+
+In Terminal, type this and press Enter:
+
+```bash
+npm install
 ```
-MyInvoice.json → MyInvoice_converted_UBL.xml
+
+Wait for it to finish (might take 1-2 minutes). You'll see a lot of text scrolling — that's normal!
+
+---
+
+### Step 4: Build the app
+
+Now type this and press Enter:
+
+```bash
+npm run build:mac
+```
+
+This takes a few minutes. When it's done, you'll have your app!
+
+---
+
+### Step 5: Find your app
+
+1. Open **Finder**
+2. Go to the `converter-mac` folder
+3. Open the `dist` folder inside it
+4. You'll see:
+   - `Invoice Converter.dmg` — This is your installer!
+   - `mac` folder — Contains the `.app` file
+
+---
+
+## Installing the App
+
+### From the DMG (Recommended)
+
+1. **Double-click** `Invoice Converter.dmg`
+2. A window opens with the app and an Applications folder
+3. **Drag** the Invoice Converter icon **onto** the Applications folder
+4. Wait for it to copy
+5. **Eject** the DMG (click the eject icon next to it in Finder sidebar)
+6. Open **Applications** folder and double-click **Invoice Converter**
+
+### First Time Opening
+
+macOS might say the app is from an "unidentified developer". Here's how to open it:
+
+1. **Don't** click "Move to Trash"!
+2. Open **System Preferences** then **Security & Privacy**
+3. Click **"Open Anyway"** next to the Invoice Converter message
+4. Or: **Right-click** the app, then **Open**, then **Open**
+
+You only need to do this once.
+
+---
+
+## How to Use the App
+
+### Converting an Invoice
+
+1. **Open** Invoice Converter
+2. **Drag** your invoice file onto the app window
+   - Or click the drop zone to browse for a file
+   - Or press Cmd + O to open a file
+3. **Choose** your output format:
+   - **UBL 2.1** — Standard XML format
+   - **CII** — UN/CEFACT format
+   - **PDF** — Printable document
+   - **JSON** — Data format
+4. **Select** your country (for country-specific rules)
+5. Click **Convert**
+6. Done! Your converted file is saved next to the original
+
+### Where's my converted file?
+
+It's in the **same folder** as your original file, with a new name:
+```
+Original:   MyInvoice.json
+Converted:  MyInvoice_converted_UBL.xml
 ```
 
 ---
 
-## Supported Formats
+## What Files Can I Convert?
 
-### Input
-| Format | Description |
-|--------|-------------|
-| **JSON** | EN16931 structured data |
-| **XML** | UBL 2.1 or CII (auto-detected) |
-| **CSV** | Spreadsheet with metadata header |
+### Files You Can Open (Input)
 
-### Output
-| Format | Description |
-|--------|-------------|
-| **UBL 2.1** | OASIS Universal Business Language |
-| **CII** | UN/CEFACT Cross-Industry Invoice |
-| **PDF** | Human-readable HTML document |
-| **JSON** | Structured data format |
+| Type | What it is |
+|------|------------|
+| .json | Invoice data in JSON format |
+| .xml | UBL or CII invoice (auto-detected) |
+| .csv | Spreadsheet/Excel export |
+
+### Files You Can Create (Output)
+
+| Type | What it is |
+|------|------------|
+| UBL 2.1 | European standard XML |
+| CII | UN/CEFACT standard XML |
+| PDF | Printable invoice document |
+| JSON | Structured data file |
 
 ---
 
-## Country Support
+## Supported Countries
 
-| Country | Standard | Status |
-|---------|----------|--------|
-| 🇩🇪 Germany | XRechnung | ✅ Full |
-| 🇫🇷 France | Factur-X | ✅ Full |
-| 🇮🇹 Italy | FatturaPA | ✅ Full |
-| 🇪🇸 Spain | — | ✅ Supported |
-| 🇬🇧 United Kingdom | — | ✅ Supported |
-| 🇦🇹 Austria | — | ✅ Supported |
-| 🇳🇱 Netherlands | — | ✅ Supported |
-| 🇧🇪 Belgium | — | ✅ Supported |
+| Country | Standard |
+|---------|----------|
+| Germany | XRechnung |
+| France | Factur-X |
+| Italy | FatturaPA |
+| Spain | Standard |
+| United Kingdom | Standard |
+| Austria | Standard |
+| Netherlands | Standard |
+| Belgium | Standard |
 
 ---
 
 ## Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| ⌘ O | Open invoice file |
-| ⌘ W | Close window |
-| ⌘ Q | Quit app |
-| ⌘ , | Preferences |
-| ⌘ + | Zoom in |
-| ⌘ - | Zoom out |
+| Press | To do this |
+|-------|------------|
+| Cmd + O | Open a file |
+| Cmd + W | Close window |
+| Cmd + Q | Quit the app |
+| Cmd + Plus | Zoom in |
+| Cmd + Minus | Zoom out |
 
 ---
 
 ## System Requirements
 
-- **macOS** 10.13 High Sierra or later
-- **Processor** Apple Silicon (M1/M2/M3) or Intel
-- **Disk Space** ~150 MB
+- **Mac:** macOS 10.13 (High Sierra) or newer
+- **Chip:** Apple Silicon (M1/M2/M3) or Intel — both work!
+- **Space:** About 150 MB
 
 ---
 
-## Building from Source
+## Troubleshooting
 
+### "npm: command not found"
+Node.js isn't installed. Go back to Step 1.
+
+### "Cannot be opened because it is from an unidentified developer"
+See the "First Time Opening" section above.
+
+### The build failed
+Make sure you're in the right folder. In Terminal, type:
 ```bash
-# Clone or download the source
-cd converter-mac
+pwd
+```
+It should end with `converter-mac`. If not, go back to Step 2.
 
-# Install dependencies
+### Something else went wrong
+Try deleting the node_modules folder and starting over:
+```bash
+rm -rf node_modules
 npm install
-
-# Run in development
-npm start
-
-# Build for distribution
 npm run build:mac
 ```
-
-Build outputs appear in the `dist/` folder.
 
 ---
 
@@ -155,19 +236,19 @@ Build outputs appear in the `dist/` folder.
 - Personal use
 - Businesses with capital under $15 million USD
 
-**Requires permission:**
-- Organizations with capital over $15 million USD
+**Need permission for:**
+- Large organizations (capital over $15 million USD)
 - Redistribution or modification
 
 See [LICENSE.txt](LICENSE.txt) for full terms.
 
 ---
 
-## Support & Contact
+## Need Help?
 
-📧 **Email:** greedthefirst@gmail.com
+**Email:** greedthefirst@gmail.com
 
-For licensing inquiries, enterprise permissions, or support questions.
+For licensing questions, enterprise permissions, or support.
 
 ---
 
