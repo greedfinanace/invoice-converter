@@ -37,9 +37,22 @@ The installer will create:
 - Start Menu entry
 - Uninstaller (accessible via Add/Remove Programs)
 
-### Portable Version
+### Portable Version (Windows)
 
 Alternatively, use `Invoice Converter.exe` directly without installation.
+
+### macOS Installation
+
+1. Download the `.dmg` file from the [Releases](https://github.com/greedfinanace/invoice-converter/releases) page.
+2. Double-click the `.dmg` file to mount it.
+3. Drag the **Invoice Converter** app into your **Applications** folder.
+
+**Note for macOS Users:**
+If you see a warning saying *"App cannot be opened because the developer cannot be verified"*:
+1. Go to **System Settings** > **Privacy & Security**.
+2. Scroll down to the security section.
+3. Click **Open Anyway** next to the notification about Invoice Converter.
+4. Click **Open** in the confirmation dialog.
 
 ---
 
@@ -122,7 +135,7 @@ For licensing inquiries, enterprise permissions, or support:
 
 ## Technical Information
 
-- Platform: Windows (64-bit)
+- Platform: Windows (64-bit), macOS (Universal)
 - Framework: Electron
 - Standards: EN16931, UBL 2.1, UN/CEFACT CII
 
